@@ -1,5 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from models import Base
+from sqlalchemy.orm import sessionmaker
 
 from conftest import SQLITE_URL
 from models import Game, Review
@@ -12,7 +14,8 @@ class TestGame:
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    # add test data
+    # create tables
+    Base.metadata.create_all(engine)
     mario_kart = Game(
         title="Mario Kart",
         platform="Switch",
@@ -20,7 +23,7 @@ class TestGame:
         price=60
     )
 
-    session.add(mario_kart)
+    session.add(mario_kart)    
     session.commit()
 
     mk_review_1 = Review(
